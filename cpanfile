@@ -12,6 +12,11 @@ requires 'Test::WWW::Mechanize::PSGI';
 requires 'Text::Xslate', '2.0009';
 requires 'Time::Piece', '1.20';
 requires 'perl', '5.010_001';
+requires 'Log::Minimal', '0.17';
+requires 'DBIx::DBHResolver', '0.17';
+requires 'DBIx::Simple', '1.35';
+requires 'DateTime', '1.06';
+requires 'DBD::mysql', '4.025';
 
 on configure => sub {
     requires 'Module::Build', '0.38';
