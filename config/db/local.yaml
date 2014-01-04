@@ -36,6 +36,16 @@ aliases:
     mysql_enable_utf8: 0
 
 connect_info:
+  TEST_W:
+    dsn: dbi:mysql:dbname=babyry_main;host=localhost;mysql_read_default_file=~/BabyryServer/config/db/my.cnf
+    attrs:    *writeattrs
+    user:     *writeuser
+    password: *writepassword
+  TEST_R:
+    dsn: dbi:mysql:dbname=babyry_main;host=localhost;mysql_read_default_file=~/BabyryServer/config/db/my.cnf
+    attrs:    *readattrs
+    user:     *readuser
+    password: *readpassword
   USER_W:
     dsn: dbi:mysql:dbname=babyry_main;host=localhost;mysql_read_default_file=~/BabyryServer/config/db/my.cnf
     attrs:    *writeattrs

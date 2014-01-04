@@ -90,6 +90,18 @@
 <form method="post" action="/reset_counter">
     <input type="submit" name="Reset counter." class="btn btn-default">
 </form>
+
+<h2>Messages</h2>
+
+: for $messages -> $message {
+    <div><: $message :></div>
+: }
+
+<form method="post" action="/message/add">
+    <input name="message" type="textarea">
+    <input type="submit" name="Add Message" class="btn btn-default">
+</form>
+
      
 
 : }

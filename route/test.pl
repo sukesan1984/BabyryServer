@@ -8,5 +8,8 @@
     '/account/logout' => +{
         controller => 'Test', action => 'account_logout',
     },
+    '/message/add' => +{
+        controller => 'Test', action => 'message_add',
+    },
 }
 

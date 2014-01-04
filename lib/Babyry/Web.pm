@@ -4,6 +4,8 @@ use warnings;
 use utf8;
 use parent qw/Babyry Amon2::Web/;
 use File::Spec;
+use Log::Minimal;
+use Carp;
 
 # load plugins
 __PACKAGE__->load_plugins(
