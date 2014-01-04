@@ -5,18 +5,25 @@ use utf8;
 use parent qw/Babyry Amon2::Web/;
 use File::Spec;
 
-# dispatcher
-use Babyry::Web::Dispatcher;
-sub dispatch {
-    return (Babyry::Web::Dispatcher->dispatch($_[0]) or die "response is not generated");
-}
-
 # load plugins
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
     'Web::JSON',
     '+Babyry::Web::Plugin::Session',
 );
+
+# dispatcher
+use Babyry::Web::Dispatcher;
+sub dispatch {
+    return ( Babyry::Web::Dispatcher->dispatch($_[0]) or __exception("response is not generated") );
+}
+
+sub __exception {
+    my $msg = shift;
+    critff($msg);
+    croak($msg);
+}
+
 
 # setup view
 use Babyry::Web::View;
@@ -28,6 +35,7 @@ use Babyry::Web::View;
         $view
     }
 }
+
 
 # for your security
 __PACKAGE__->add_trigger(
