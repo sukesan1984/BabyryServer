@@ -2,7 +2,8 @@ package Babyry::Logic;
 use strict;
 use warnings;
 use utf8;
-use parent qw/Babyry/
+use parent qw/Babyry/;
+
 use Babyry::DBI;
 use DBIx::Simple;
 
@@ -10,8 +11,8 @@ sub dbh {
     my ($self, $label) = @_;
 
     my $resolver = Babyry::DBI->resolver();
-    $resolver->connect($label);
-    $resolver;
+    my $dbh = $resolver->connect($label);
+    $dbh;
 }
 
 sub dx {
