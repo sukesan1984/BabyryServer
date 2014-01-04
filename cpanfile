@@ -20,6 +20,8 @@ requires 'DBD::mysql',                      '4.025';
 requires 'File::Stamped',                   '0.03';
 requires 'Path::Class',                     '0.33';
 requires 'Router::Simple',                  '0.15';
+requires 'SQL::Abstract',                   '1.75';
+requires 'SQL::Abstract::Plugin::InsertMulti', '0.04';
 
 on configure => sub {
     requires 'Module::Build', '0.38';
