@@ -18,8 +18,6 @@ our $resolver;
     die sprintf("db config not found in: %s", $db_conf_path) unless -f $db_conf_path;
 
     my $conf = do($db_conf_path);
-    use YAML;
-    print Dump $conf;
     $resolver->config($conf);
 }
 
