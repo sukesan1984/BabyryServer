@@ -10,14 +10,17 @@ use Babyry;
 our $resolver;
 {
     my $env = $ENV{APP_ENV} || 'local';
-    my $db_yamls = sprintf Babyry->base_dir . '/config/db/%s.yaml', $env;
 
     $resolver = DBIx::DBHResolver->new;
 
     # load YAML
-    my $db_conf_path = sprintf Babyry->base_dir . '/config/db/%s.yaml', $env;
+    my $db_conf_path = sprintf Babyry->base_dir . '/config/db/%s.conf', $env;
     die sprintf("db config not found in: %s", $db_conf_path) unless -f $db_conf_path;
-    $resolver->load($db_conf_path);
+
+    my $conf = do($db_conf_path);
+    use YAML;
+    print Dump $conf;
+    $resolver->config($conf);
 }
 
 sub resolver {
