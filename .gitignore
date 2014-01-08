@@ -17,3 +17,7 @@ MYMETA.yml
 /local/
 /.carton/
 config/db/local.conf
+service/*/supervise
+service/*/env/*
+service/*/log/main
+service/*/log/supervise
