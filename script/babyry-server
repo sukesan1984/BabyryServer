@@ -23,9 +23,9 @@ my $app = builder {
     Babyry::Web->to_app();
 };
 unless (caller) {
-    my $port        = 5000;
+    my $port        = $ENV{PORT} ? $ENV{PORT} : 5000;
     my $host        = '127.0.0.1';
-    my $max_workers = 4;
+    my $max_workers = $ENV{NUM} ? $ENV{NUM} : 4;
 
     require Getopt::Long;
     require Plack::Loader;

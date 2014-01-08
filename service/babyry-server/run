@@ -1,0 +1,9 @@
+#!/bin/sh
+exec 2>&1
+
+PERL=/home/babyry/perl5/perlbrew/perls/perl-5.16.3/bin/perl
+DAEMON=/home/babyry/BabyryServer/script/babyry-server
+
+exec \
+  envdir ./env \
+  $PERL $DAEMON
