@@ -21,3 +21,4 @@ service/*/supervise
 service/*/env/*
 service/*/log/main
 service/*/log/supervise
+log/
