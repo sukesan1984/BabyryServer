@@ -8,7 +8,6 @@ use Babyry::Logic::Login;
 
 sub index {
     my ($class, $c) = @_;
-    infof("indexxxxxxxxx");
 
     my $session = $c->session->get('babyry_session') || '';
     my $login = Babyry::Logic::Login->new;
