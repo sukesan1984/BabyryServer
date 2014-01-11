@@ -1,0 +1,30 @@
+{
+  "name": "BabyryServer",
+  "version": "0.0.0",
+  "authors": [
+    "Masayuki Uehara <munky69rock@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.0.3",
+    "bootstrap": "~3.0.0"
+  },
+  "exportsOverride": {
+    "jquery": {
+      "js": "**/*.js",
+      "css": "**/*.css"
+    },
+    "bootstrap": {
+      "js": "**/*.js",
+      "css": "**/*.css",
+      "fonts": "**/glyphicons-halflings-regular.*"
+    }
+  }
+}

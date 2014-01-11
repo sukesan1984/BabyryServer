@@ -14,7 +14,7 @@ sub index {
     $c->session->set('counter' => $counter);
 
     my $messages = Babyry::Logic::Test->new->message_get();
-    return $c->render('index.tx', {
+    return $c->render('index.tt', {
         counter  => $counter,
         messages => $messages,
     });
