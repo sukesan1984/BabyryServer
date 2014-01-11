@@ -1,10 +1,58 @@
-[% WRAPPER 'include/layout.tt' with has_footer = 1 %]<style>.image {
-  margin: 0 auto;
-  max-width: 320px;
-  padding: 10px;
-}
-.image img {
-  width: 100%;
-  max-width: 320px;
-}
-</style><ul class="nav nav-tabs"><li class="active"><a href="#g1" data-toggle="tab">Group1</a></li><li><a href="#g2" data-toggle="tab">Group2</a></li><li><a href="#g3" data-toggle="tab">Group3</a></li></ul><div class="tab-content"><div id="g1" class="tab-pane active"></div><div id="g2" class="tab-pane"></div><div id="g3" class="tab-pane"></div></div><div class="timeline"><div class="item"><div class="image"><img src="http://lorempixel.com/320/240/people/" class="img-thumbnail"/></div><div class="comment panel panel-default"><div class="panel-heading">comment</div><ul class="list-group"><li class="list-group-item">comment0</li><li class="list-group-item">comment1</li><li class="list-group-item">comment2</li></ul></div></div><div class="item"><div class="image"><img src="http://lorempixel.com/320/240/people/" class="img-thumbnail"/></div><div class="comment panel panel-default"><div class="panel-heading">comment</div><ul class="list-group"><li class="list-group-item">comment0</li><li class="list-group-item">comment1</li><li class="list-group-item">comment2</li></ul></div></div><div class="item"><div class="image"><img src="http://lorempixel.com/320/240/people/" class="img-thumbnail"/></div><div class="comment panel panel-default"><div class="panel-heading">comment</div><ul class="list-group"><li class="list-group-item">comment0</li><li class="list-group-item">comment1</li><li class="list-group-item">comment2</li></ul></div></div></div>[% END %]
+[% WRAPPER 'include/layout.tt' with has_footer = 1 %]
+<style>
+  .image {
+    margin: 0 auto;
+    max-width: 320px;
+    padding: 10px;
+  }
+  .image img {
+    width: 100%;
+    max-width: 320px;
+  }
+  
+</style>
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#g1" data-toggle="tab">Group1</a></li>
+  <li><a href="#g2" data-toggle="tab">Group2</a></li>
+  <li><a href="#g3" data-toggle="tab">Group3</a></li>
+</ul>
+<div class="tab-content">
+  <div id="g1" class="tab-pane active"></div>
+  <div id="g2" class="tab-pane"></div>
+  <div id="g3" class="tab-pane"></div>
+</div>
+<div class="timeline">
+  <div class="item">
+    <div class="image"><img src="http://lorempixel.com/320/240/people/" class="img-thumbnail"/></div>
+    <div class="comment panel panel-default">
+      <div class="panel-heading">comment</div>
+      <ul class="list-group">
+        <li class="list-group-item">comment0</li>
+        <li class="list-group-item">comment1</li>
+        <li class="list-group-item">comment2</li>
+      </ul>
+    </div>
+  </div>
+  <div class="item">
+    <div class="image"><img src="http://lorempixel.com/320/240/people/" class="img-thumbnail"/></div>
+    <div class="comment panel panel-default">
+      <div class="panel-heading">comment</div>
+      <ul class="list-group">
+        <li class="list-group-item">comment0</li>
+        <li class="list-group-item">comment1</li>
+        <li class="list-group-item">comment2</li>
+      </ul>
+    </div>
+  </div>
+  <div class="item">
+    <div class="image"><img src="http://lorempixel.com/320/240/people/" class="img-thumbnail"/></div>
+    <div class="comment panel panel-default">
+      <div class="panel-heading">comment</div>
+      <ul class="list-group">
+        <li class="list-group-item">comment0</li>
+        <li class="list-group-item">comment1</li>
+        <li class="list-group-item">comment2</li>
+      </ul>
+    </div>
+  </div>
+</div>[% END %]

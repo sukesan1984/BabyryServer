@@ -14,6 +14,9 @@ module.exports = (grunt) ->
 
     jade:
       tmpl:
+        options:
+          pretty: true
+
         files: [
           expand: true
           cwd: 'jade/'
