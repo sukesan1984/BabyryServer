@@ -27,14 +27,29 @@ module.exports = (grunt) ->
             not path.match(/\/_parts\//)
         ]
 
+    compass:
+      dev:
+        options:
+          basePath: 'static'
+          sassDir: 'sass'
+          cssDir: 'css'
+          imagesDir: 'img'
+          javascriptsDir: 'js'
+          noLineComments: true
+
     watch:
       jade:
         files: 'jade/**/**'
         tasks: ['jade']
 
+      compass:
+        files: 'static/sass/**/**'
+        tasks: ['compass']
+
   [
     'grunt-contrib-jade'
     'grunt-contrib-watch'
+    'grunt-contrib-compass'
     'grunt-bower-task'
   ].forEach grunt.loadNpmTasks
 
