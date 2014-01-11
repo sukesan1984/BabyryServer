@@ -37,6 +37,16 @@ module.exports = (grunt) ->
           javascriptsDir: 'js'
           noLineComments: true
 
+    coffee:
+      dev:
+        options:
+          sourceMap: true
+        expand: true
+        cwd: 'static/coffee'
+        src: ['**/**.coffee']
+        dest: 'static/js'
+        ext: '.js'
+
     watch:
       jade:
         files: 'jade/**/**'
@@ -46,10 +56,15 @@ module.exports = (grunt) ->
         files: 'static/sass/**/**'
         tasks: ['compass']
 
+      coffee:
+        files: 'static/coffee/**/**'
+        tasks: ['coffee']
+
   [
     'grunt-contrib-jade'
     'grunt-contrib-watch'
     'grunt-contrib-compass'
+    'grunt-contrib-coffee'
     'grunt-bower-task'
   ].forEach grunt.loadNpmTasks
 

@@ -26,3 +26,5 @@ node_modules/
 bower_components/
 npm-debug.log
 static/.sass-cache/
+static/js/**.map
+static/js/**/**.map
