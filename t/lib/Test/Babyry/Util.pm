@@ -1,4 +1,4 @@
-package t::Util;
+package Test::Babyry::Util;
 BEGIN {
     unless ($ENV{PLACK_ENV}) {
         $ENV{PLACK_ENV} = 'test';
@@ -39,12 +39,5 @@ sub slurp {
     scalar do { local $/; <$fh> };
 }
 
-# initialize database
-use Babyry;
-{
-    unlink 'db/test.db' if -f 'db/test.db';
-    system("sqlite3 db/test.db < sql/sqlite.sql");
-}
-
-
 1;
+
