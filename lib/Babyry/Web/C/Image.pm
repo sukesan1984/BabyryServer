@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use parent qw/Babyry::Web::C/;
 use Log::Minimal;
-use FindBin;
 use Babyry::Logic::Image;
 
 sub image_get_signature {
@@ -21,7 +20,8 @@ sub image_get_url {
     my $bucket = $c->req->param('bucket');
     my $key = $c->req->param('key');
 
-    my $ruby = "/home/babyry/.rbenv/shims/ruby $FindBin::Bin/../lib/Babyry/Logic/get_onetime_url.rb";
+    my $home_dir = Babyry->base_dir;
+    my $ruby = "/home/babyry/.rbenv/shims/ruby $home_dir/lib/Babyry/Logic/get_onetime_url.rb";
     my $url = `$ruby $bucket $key`;
     chomp($url);
 

@@ -10,6 +10,9 @@ use Net::SMTP;
 use Net::SMTP::SSL;
 use Authen::SASL;
 use MIME::Entity;
+use Log::Minimal;
+
+use Babyry::Common;
 
 sub set_subject {
     my ($self, $subject) = @_;
@@ -31,18 +34,19 @@ sub send_mail {
 
     die 'there is no subject or body or address.' if (!$self->{body} || !$self->{address} || !$self->{subject});
 
-    my $config = do('/etc/.secret/password.conf');
+    # temporary using gmail smtp
+    require '/etc/.secret/password.conf';
 
     my $smtp_server = 'smtp.gmail.com';
     my $smtp_port = '465';
-    my $smtp_acc = $config->{gmail}->{address};
-    my $smtp_pwd = $config->{gmail}->{password};
+    my $smtp_acc = $Secret::gmail->{address};
+    my $smtp_pwd = $Secret::gmail->{password};
 
     my $mail_subject = jcode($self->{subject})->jis;
     $mail_subject = jcode($mail_subject)->mime_encode;
     my $mail_to = jcode($self->{address})->jis;
     $mail_to = jcode($mail_to)->mime_encode;
-    my $mail_from = jcode($config->{gmail}->{address})->jis;
+    my $mail_from = jcode($Secret::gmail->{address})->jis;
     $mail_from = jcode($mail_from)->mime_encode;
     my $mail_body = jcode($self->{body})->jis;
 
