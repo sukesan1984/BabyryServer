@@ -6,6 +6,7 @@ use warnings;
 use Log::Minimal;
 use DBIx::DBHResolver;
 use Babyry;
+use Babyry::Common;
 
 our $resolver;
 {
@@ -13,12 +14,8 @@ our $resolver;
 
     $resolver = DBIx::DBHResolver->new;
 
-    # load YAML
-    my $db_conf_path = sprintf Babyry->base_dir . '/config/db/%s.conf', $env;
-    die sprintf("db config not found in: %s", $db_conf_path) unless -f $db_conf_path;
-
-    my $conf = do($db_conf_path);
-    $resolver->config($conf);
+    my $config = Babyry::Common->config;
+    $resolver->config($config->{db});
 }
 
 sub resolver {
