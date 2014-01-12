@@ -87,5 +87,39 @@ TEXT
     $mail->send_mail;
 }
 
+sub verify {
+    my ($self, $token) = @_;
+
+    my ($user_id, $expired_at) = $self->dx('BABYRY_MAIN_R')->select(
+        'register_token',
+        [qw/user_id expired_at/],
+        { token => $token }
+    )->flat;
+
+    return 'NOT_EXIST' if !$user_id;
+    return 'EXPIRED'   if $expired_at <= time();
+
+    # TODO verifyされずにexpireされたtokenをbatchで掃除
+
+    my $dxw = $self->dx('BABYRY_MAIN_W');
+    eval {
+        $dxw->delete(
+            'register_token',
+            {
+                user_id => $user_id,
+                token   => $token,
+            }
+        );
+        $dxw->dbh->commit;
+    };
+    if ($@) {
+        $dxw->dbh->rollback;
+        croakf(
+            'Failed to delete register_token user_id:%d token:%s error:%s',
+            $user_id, $token, $@
+        );
+    }
+}
+
 1;
 
