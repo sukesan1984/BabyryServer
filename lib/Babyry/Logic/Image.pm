@@ -28,7 +28,7 @@ sub create_signature {
             { bucket => $bucket },
             [ "starts-with", "\$key", "test/" ],
             { "acl" => "private" },
-            { "success_action_redirect" => "http://localhost/success.html" },
+            { "success_action_redirect" => "http://babyryserver5001/image/get_url" },
             [ "starts-with", "\$Content-Type", "" ],
             [ 'content-length-range', 0, 1073741824 ],
         ],
