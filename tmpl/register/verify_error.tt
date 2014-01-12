@@ -1,0 +1,10 @@
+[% WRAPPER 'include/layout.tt' %]
+<div>
+  [% IF error_message == 'EXPIRED' %]
+    ALREADY EXPIRED
+  [% ELSIF error_message == 'NOT_EXIST' %]
+    NOT EXIST
+  [% END %]
+</div>
+[% END %]
+
