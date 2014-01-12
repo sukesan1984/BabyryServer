@@ -64,7 +64,7 @@ sub dispatch {
     my $result = eval { $controller_class->$action($c, $p) };
     if ( my $e = $@ ) {
         critf("Internal Server Error: %s", $e);
-        $c->res_500();
+        return $c->res_500();
     }
     return $result;
 }
