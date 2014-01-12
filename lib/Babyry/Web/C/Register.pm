@@ -37,7 +37,7 @@ sub execute {
         email    => $email,
         password => $password,
     });
-    $c->render('invite/email.tt', {});
+    $c->redirect('/invite/email');
 }
 
 # TODO move to Filter
