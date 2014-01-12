@@ -6,25 +6,25 @@ use parent qw/Babyry::Web::C/;
 use Log::Minimal;
 use Babyry::Logic::Image;
 
+my $image = Babyry::Logic::Image->new();
+
 sub image_get_signature {
     my ($class, $c) = @_;
 
-    my $signature = Babyry::Logic::Image->new->create_signature();
+    my $signature = $image->create_signature();
 
     return $c->render_json($signature);
 }
 
-sub image_get_url {
+sub image_after_upload {
     my ($class, $c) = @_;
 
     my $bucket = $c->req->param('bucket');
     my $key = $c->req->param('key');
 
-    my $home_dir = Babyry->base_dir;
-    my $ruby = "/home/babyry/.rbenv/shims/ruby $home_dir/lib/Babyry/Logic/get_onetime_url.rb";
-    my $url = `$ruby $bucket $key`;
-    chomp($url);
+    $image->set_image_id($bucket, $key);
 
+    my $url = $image->get_image_url($bucket, $key);
     # TODO
     # urlがおかしかったらアップロードが失敗していると見なしてエラー返す
 
