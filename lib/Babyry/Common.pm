@@ -5,11 +5,9 @@ use warnings;
 use parent qw/Babyry/;
 use Log::Minimal;
 use Babyry::ConfigLoader;
-use Digest::MD5 qw/md5_hex/;
+use Digest::SHA qw/hmac_sha256_hex/;
 
 sub env {
-    my ($self) = @_;
-
     return 'local' if !$ENV{APP_ENV};
     return $ENV{APP_ENV} eq 'production'  ?  'production'  :
            $ENV{APP_ENV} eq 'development' ?  'development' :
@@ -18,10 +16,11 @@ sub env {
 
 sub config { Babyry::ConfigLoader->new(env())->config }
 
+# TODO implement more strictly
 sub enc_password {
-    my ($self, $password) = @_;
-    my $secret = $self->config('regist_secret');
-    return md5_hex($password . $secret);
+    my ($password) = @_;
+    my $secret = __PACKAGE__->config->{'register_secret'};
+    return hmac_sha256_hex($password . $secret);
 }
 
 1;
