@@ -1,0 +1,22 @@
+[% WRAPPER 'include/layout.tt' %]
+ログインページ<br>
+[% IF error == 'UNMATCH_CONFIRM' %]
+<div style="color:red">パスワードが一致しません</div>
+[% ELSIF error == 'INVALID_PASSWORD' %]
+<div style="color:red">ユーザー名かパスワードが正しくありません</div>
+[% END %]
+<form action="[% uri_for('/login/execute') %]" role="form" method="post">
+  <div class="form-group">
+    <label for="email">Email address</label>
+    <input id="email" type="email" name="email" placeholder="Enter email" class="form-control"/>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password" placeholder="Enter password" class="form-control"/>
+  </div>
+  <div class="form-group">
+    <label for="password_cofnirm">Password(確認用)</label>
+    <input id="password_confirm" type="password" name="password_confirm" placeholder="Enter password(confirm)" class="form-control"/>
+  </div>
+  <input type="submit" value="Submit" class="btn btn-default"/>
+</form>[% END %]
