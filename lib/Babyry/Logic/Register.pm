@@ -9,7 +9,9 @@ use Babyry::Common;
 use Digest::MD5 qw/md5_hex/;
 
 use SQL::Abstract;
+use Babyry::Logic::Mail;
 use Babyry::Logic::Sequence;
+use Babyry::Logic::Common;
 use Log::Minimal;
 
 sub index {
@@ -26,6 +28,7 @@ sub execute {
 
     my $sequence = Babyry::Logic::Sequence->new();
     my $user_id = $sequence->get_id('seq_user');
+    my $token = $self->create_token($user_id);
 
     eval {
         $dx->insert('user', {
@@ -36,14 +39,17 @@ sub execute {
         $dx->insert('user_auth', {
             user_id       => $user_id,
             email         => $email,
-            password_hash => Babyry::Common->enc_password($password), # TODO more strict
+            password_hash => Babyry::Logic::Common->new->enc_password($password), # TODO more strict
         });
         $dx->insert('register_token', {
             user_id    => $user_id,
-            token      => $self->create_token($user_id),
+            token      => $token,
             expired_at => $self->get_expired_at($unixtime),
         });
         $dx->dbh->commit;
+
+        $self->send_verify_mail($email, $token);
+
     };
     if ($@) {
         $dx->dbh->rollback;
@@ -55,12 +61,30 @@ sub execute {
 sub create_token {
     my ($self, $user_id) = @_;
     return md5_hex(time . $user_id . Babyry::Common->config->{register_secret});
-
 }
 
 sub get_expired_at {
     my ($self, $unixtime) = @_;
     return $unixtime + 3600 * 24; # TODO move to config
+}
+
+sub send_verify_mail {
+    my ($self, $email, $token) = @_;
+
+    $email = 'meaning.sys@gmail.com'; # override for safety
+
+    my $mail = Babyry::Logic::Mail->new();
+    $mail->set_subject('てすと');
+    $mail->set_body(<<"TEXT");
+    please click this link to verify your account.
+
+    http://babyryserver5000/register/verify?token=$token
+    http://babyryserver5001/register/verify?token=$token
+    http://babyryserver5002/register/verify?token=$token
+TEXT
+
+    $mail->set_address($email);
+    $mail->send_mail;
 }
 
 1;
