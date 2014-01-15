@@ -21,7 +21,6 @@ service/*/supervise
 service/*/env/*
 service/*/log/main
 service/*/log/supervise
-log/
 node_modules/
 bower_components/
 npm-debug.log
