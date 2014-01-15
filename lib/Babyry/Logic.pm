@@ -26,11 +26,16 @@ sub dx {
 
 sub teng {
     my ($self, $label) = @_;
-    $self->{teng} ||= Teng::Schema::Loader->load(
+
+    return $self->{teng} if $self->{teng};
+
+    my $teng = Teng::Schema::Loader->load(
         namespace => 'Babyry::Teng',
         dbh       => $self->dbh($label),
     );
-    $self->{teng};
+    $teng->load_plugin('Count');
+    $self->{teng} = $teng;
+    return $self->{teng};
 }
 
 1;
