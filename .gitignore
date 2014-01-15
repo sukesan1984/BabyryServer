@@ -27,3 +27,5 @@ npm-debug.log
 static/.sass-cache/
 static/js/**.map
 static/js/**/**.map
+log/*
+!.gitkeep
