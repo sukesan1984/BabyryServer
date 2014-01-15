@@ -7,8 +7,6 @@ use parent qw/Babyry::Logic/;
 
 use Jcode;
 use Net::SMTP;
-use Net::SMTP::SSL;
-use Authen::SASL;
 use MIME::Entity;
 use Log::Minimal;
 
@@ -34,13 +32,7 @@ sub send_mail {
 
     die 'there is no subject or body or address.' if (!$self->{body} || !$self->{address} || !$self->{subject});
 
-    # temporary using gmail smtp
-    require '/etc/.secret/password.conf';
-
-    my $smtp_server = 'smtp.gmail.com';
-    my $smtp_port = '465';
-    my $smtp_acc = $Secret::gmail->{address};
-    my $smtp_pwd = $Secret::gmail->{password};
+    my $smtp_server = '10.0.0.1';
 
     my $mail_subject = jcode($self->{subject})->jis;
     $mail_subject = jcode($mail_subject)->mime_encode;
@@ -54,24 +46,20 @@ sub send_mail {
     my $oSmtp;
     my $oMime;
 
-    $oSmtp = Net::SMTP::SSL->new($smtp_server,Port => $smtp_port, Debug => 1);
+    $oSmtp = Net::SMTP->new($smtp_server);
 
-    if($oSmtp->auth($smtp_acc,$smtp_pwd)){
-        $oSmtp->mail($mail_from);
-        $oSmtp->to($mail_to);
-        $oSmtp->data();
-        $oMime = MIME::Entity->build(
-            From     => $mail_from,
-            To       => $mail_to,
-            Subject  => $mail_subject,
-            Data     => $mail_body
-        );
-        $oSmtp->datasend($oMime->stringify);
-        $oSmtp->dataend();
-        $oSmtp->quit;
-    }else{
-        $err = 'SMTP Server Authentication Error!!';
-    }
+    $oSmtp->mail($mail_from);
+    $oSmtp->to($mail_to);
+    $oSmtp->data();
+    $oMime = MIME::Entity->build(
+        From     => $mail_from,
+        To       => $mail_to,
+        Subject  => $mail_subject,
+        Data     => $mail_body
+    );
+    $oSmtp->datasend($oMime->stringify);
+    $oSmtp->dataend();
+    $oSmtp->quit;
 }
 
 1;

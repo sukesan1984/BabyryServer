@@ -9,6 +9,7 @@ requires 'Router::Boom',                    '0.06';
 requires 'Starlet',                         '0.20';
 requires 'Teng',                            '0.18';
 requires 'Test::WWW::Mechanize::PSGI';
+requires 'Test::mysqld';
 requires 'Text::Xslate',                    '2.0009';
 requires 'Time::Piece',                     '1.20';
 requires 'perl',                            '5.010_001';
@@ -22,6 +23,7 @@ requires 'Path::Class',                     '0.33';
 requires 'Router::Simple',                  '0.15';
 requires 'SQL::Abstract',                   '1.75';
 requires 'SQL::Abstract::Plugin::InsertMulti', '0.04';
+requires 'String::CamelCase';
 
 requires 'Plack::Middleware::BetterStackTrace', '0.02';
 requires 'Data::Dump', '1.22';
