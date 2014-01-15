@@ -6,6 +6,7 @@ use parent qw/Babyry/;
 
 use Babyry::DBI;
 use DBIx::Simple;
+use Teng::Schema::Loader;
 
 sub dbh {
     my ($self, $label) = @_;
@@ -21,6 +22,15 @@ sub dx {
     my $dbh = $self->dbh($label);
     my $dx = DBIx::Simple->new($dbh);
     return $dx;
+}
+
+sub teng {
+    my ($self, $label) = @_;
+    $self->{teng} ||= Teng::Schema::Loader->load(
+        namespace => 'Babyry::Teng',
+        dbh       => $self->dbh($label),
+    );
+    $self->{teng};
 }
 
 1;
