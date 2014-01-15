@@ -19,13 +19,15 @@ my $app = builder {
         path => qr{^(?:/robots\.txt|/favicon\.ico)$},
         root => File::Spec->catdir(dirname(__FILE__), '..', 'static');
     enable 'Plack::Middleware::ReverseProxy';
+    enable_if { $ENV{PLACK_ENV} ne 'production' } 'BetterStackTrace',
+	        application_caller_subroutine => 'Amon2::Web::handle_request';
 
     Babyry::Web->to_app();
 };
 unless (caller) {
-    my $port        = 5000;
+    my $port        = $ENV{PORT} ? $ENV{PORT} : 5000;
     my $host        = '127.0.0.1';
-    my $max_workers = 4;
+    my $max_workers = $ENV{NUM} ? $ENV{NUM} : 4;
 
     require Getopt::Long;
     require Plack::Loader;

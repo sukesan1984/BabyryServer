@@ -23,6 +23,9 @@ requires 'Router::Simple',                  '0.15';
 requires 'SQL::Abstract',                   '1.75';
 requires 'SQL::Abstract::Plugin::InsertMulti', '0.04';
 
+requires 'Plack::Middleware::BetterStackTrace', '0.02';
+requires 'Data::Dump', '1.22';
+
 on configure => sub {
     requires 'Module::Build', '0.38';
     requires 'Module::CPANfile', '0.9010';
