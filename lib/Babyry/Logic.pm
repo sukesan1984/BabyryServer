@@ -17,9 +17,9 @@ sub dbh {
 }
 
 sub dx {
-    my ($self, $label) = @_;
+    my ($self, $label, $dbh) = @_;
 
-    my $dbh = $self->dbh($label);
+    $dbh ||= $self->dbh($label);
     my $dx = DBIx::Simple->new($dbh);
     return $dx;
 }
