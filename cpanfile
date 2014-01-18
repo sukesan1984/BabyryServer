@@ -24,6 +24,8 @@ requires 'Router::Simple',                  '0.15';
 requires 'SQL::Abstract',                   '1.75';
 requires 'SQL::Abstract::Plugin::InsertMulti', '0.04';
 requires 'String::CamelCase';
+requires 'Jcode',                           '2.07';
+requires 'MIME::Entity',                    '5.505';
 
 requires 'Plack::Middleware::BetterStackTrace', '0.02';
 requires 'Data::Dump', '1.22';
