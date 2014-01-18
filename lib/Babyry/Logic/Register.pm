@@ -60,7 +60,7 @@ sub execute {
 
 sub create_token {
     my ($self, $user_id) = @_;
-    return md5_hex(time . $user_id . Babyry::Common->config->{register_secret});
+    return md5_hex(time . $user_id . Babyry::Common->get_key_vault('register_secret'));
 }
 
 sub get_expired_at {

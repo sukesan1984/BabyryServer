@@ -14,8 +14,8 @@ our $resolver;
 
     $resolver = DBIx::DBHResolver->new;
 
-    my $config = Babyry::Common->config;
-    $resolver->config($config->{db});
+    my $db_config = Babyry::Common->db_config;
+    $resolver->config($db_config);
 }
 
 sub resolver {
