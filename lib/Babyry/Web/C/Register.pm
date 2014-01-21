@@ -10,13 +10,10 @@ use Babyry::Logic::Register;
 sub index {
     my ($class, $c) = @_;
 
-    my $session = $c->session->get('babyry_session') || '';
-    my $login = Babyry::Logic::Login->new;
-    if ( my $user_id = $login->certify($session) ) {
-        $c->redirect('/');
-    }
+    my $session = Babyry::Logic::Session->new();
+    my $user_id = $session->get($c->session->get('session_id'));
 
-    return $c->render('register/index.tt', {});
+    return $c->render('register/index.tt', {user_id => $user_id});
 }
 
 sub execute {

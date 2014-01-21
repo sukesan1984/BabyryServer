@@ -41,6 +41,13 @@ use Babyry::Web::View;
 
 # for your security
 __PACKAGE__->add_trigger(
+    BEFORE_DISPATCH => sub {
+        my ($c, $res) = @_;
+        if(!$c->session->get('session_id') && $c->req->env->{PATH_INFO} ne '/login') {
+            return $c->redirect('/login');
+        }
+    },
+
     AFTER_DISPATCH => sub {
         my ( $c, $res ) = @_;
 

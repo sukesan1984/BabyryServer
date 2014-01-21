@@ -5,17 +5,16 @@ use warnings;
 use parent qw/Babyry::Web::C/;
 use Log::Minimal;
 use Babyry::Logic::Login;
+use Babyry::Logic::Session;
 
 sub index {
     my ($class, $c) = @_;
 
-    my $session = $c->session->get('babyry_session') || '';
+    my $session = Babyry::Logic::Session->new();
+    my $user_id = $session->get($c->session->get('session_id'));
     my $login = Babyry::Logic::Login->new;
-    if ( my $user_id = $login->certify($session) ) {
-        $c->redirect('/');
-    }
 
-    return $c->render('login/index.tt');
+    return $c->render('login/index.tt', {user_id => $user_id});
 }
 
 sub execute {
@@ -33,6 +32,10 @@ sub execute {
     my $user_id = $login->login($email, $password);
 
     if ($user_id) {
+        my $session_id = $c->session->id;
+        $c->session->set('session_id' => $session_id);
+        my $session = Babyry::Logic::Session->new();
+        $session->set($user_id, $session_id);
         return $c->redirect('/');
     } else {
         return $c->render('/login/index.tt', {error => 'INVALID_PASSWORD'});

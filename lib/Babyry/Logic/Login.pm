@@ -8,12 +8,6 @@ use Log::Minimal;
 use parent qw/Babyry::Logic/;
 use Babyry::Logic::Common;
 
-sub certify {
-    my ($self, $c) = @_;
-
-    # TODO certify 
-}
-
 sub login {
     my ($self, $email, $password) = @_;
 

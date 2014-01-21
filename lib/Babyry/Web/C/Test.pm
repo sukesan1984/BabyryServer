@@ -4,19 +4,20 @@ use strict;
 use warnings;
 use parent qw/Babyry::Web::C/;
 
+use Log::Minimal;
+
 use Babyry::Logic::Test;
+use Babyry::Logic::Session;
 
 sub index {
     my ($class, $c) = @_;
 
-    my $counter = $c->session->get('counter') || 0;
-    $counter++;
-    $c->session->set('counter' => $counter);
-
+    my $session = Babyry::Logic::Session->new();
+    my $user_id = $session->get($c->session->get('session_id'));
     my $messages = Babyry::Logic::Test->new->message_get();
     return $c->render('index.tt', {
-        counter  => $counter,
         messages => $messages,
+        user_id  => $user_id,
     });
 }
 
