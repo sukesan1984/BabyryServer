@@ -13,7 +13,7 @@ sub get_id {
     $sth->execute();
     my $row = $dbh->selectrow_hashref('select LAST_INSERT_ID()');
     my $id = $row->{'LAST_INSERT_ID()'};
-    $dbh->disconnect();;
+    $dbh->disconnect();
 
     return $id;
 }
