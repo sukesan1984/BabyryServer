@@ -28,6 +28,8 @@ requires 'Jcode',                           '2.07';
 requires 'MIME::Entity',                    '5.505';
 requires 'AWS::CLIWrapper',                 '1.01';
 requires 'Imager',                          '0.98';
+requires 'Module::Install::Repository',     '0.06';
+requires 'git@github.com:zentooo/Amon2-Plugin-Web-Stash.git';
 
 requires 'Plack::Middleware::BetterStackTrace', '0.02';
 requires 'Data::Dump', '1.22';
