@@ -42,5 +42,12 @@ sub execute {
     }
 }
 
+sub logout {
+    my ($class, $c) = @_;
+
+    $c->session->remove('session_id');
+    $c->redirect('/login');
+}
+
 1;
 

@@ -15,5 +15,8 @@
     '/login/execute' => +{
         controller => 'Login', action => 'execute',
     },
+    '/logout' => +{
+        controller => 'Login', action => 'logout',
+    }
 }
 
