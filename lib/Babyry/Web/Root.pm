@@ -1,4 +1,4 @@
-package Babyry::Root;
+package Babyry::Web::Root;
 use strict;
 use warnings;
 use utf8;

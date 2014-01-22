@@ -6,7 +6,7 @@ use parent qw/Babyry Amon2::Web/;
 use File::Spec;
 use Log::Minimal;
 use Carp;
-use Babyry::Root;
+use Babyry::Web::Root;
 
 # load plugins
 __PACKAGE__->load_plugins(
@@ -52,14 +52,20 @@ __PACKAGE__->add_trigger(
         # TODO move to config
         my @session_not_required_paths = qw| /login /login/execute /register /register/execute |;
 
+        my $path = $c->req->env->{PATH_INFO};
         if ( ! $session_id  ) {
-            my $path = $c->req->env->{PATH_INFO};
             if ( ! grep { $_ eq $path } @session_not_required_paths ) {
                 return $c->redirect('/login');
             }
             return;
+        } else {
+            if ( grep { $_ eq $path } @session_not_required_paths ) {
+                return $c->redirect('/');
+            }
         }
-        my $base_info = Babyry::Root->new->certify($session_id);
+
+
+        my $base_info = Babyry::Web::Root->new->certify($session_id);
         for my $key (keys %$base_info) {
             $c->stash->{$key} = $base_info->{$key};
         }
