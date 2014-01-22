@@ -7,6 +7,7 @@ use parent qw/Babyry/;
 use Babyry::DBI;
 use DBIx::Simple;
 use Teng::Schema::Loader;
+use SQL::Abstract;
 
 sub dbh {
     my ($self, $label) = @_;
@@ -36,6 +37,11 @@ sub teng {
     $teng->load_plugin('Count');
     $self->{teng} = $teng;
     return $self->{teng};
+}
+
+sub sql {
+    my ($self) = @_;
+    return SQL::Abstract->new;
 }
 
 1;

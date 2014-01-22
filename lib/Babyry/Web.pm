@@ -6,12 +6,16 @@ use parent qw/Babyry Amon2::Web/;
 use File::Spec;
 use Log::Minimal;
 use Carp;
+use Babyry::Root;
 
 # load plugins
 __PACKAGE__->load_plugins(
     'Web::FillInFormLite',
     'Web::JSON',
     '+Babyry::Web::Plugin::Session',
+    'Web::Stash' => +{
+       autorender => 1,
+    },
 );
 
 # dispatcher
@@ -43,7 +47,25 @@ use Babyry::Web::View;
 __PACKAGE__->add_trigger(
     BEFORE_DISPATCH => sub {
         my ($c, $res) = @_;
-        if(!$c->session->get('session_id') && $c->req->env->{PATH_INFO} ne '/login') {
+        my $session_id = $c->session->get('session_id');
+
+        # TODO move to config
+        my @session_not_required_paths = qw| /login /login/execute /register /register/execute |;
+
+        if ( ! $session_id  ) {
+            my $path = $c->req->env->{PATH_INFO};
+            if ( ! grep { $_ eq $path } @session_not_required_paths ) {
+                return $c->redirect('/login');
+            }
+            return;
+        }
+        my $base_info = Babyry::Root->new->certify($session_id);
+        for my $key (keys %$base_info) {
+            $c->stash->{$key} = $base_info->{$key};
+        }
+
+        # when session is invalid
+        if ( ! $c->stash->{user_id} ) {
             return $c->redirect('/login');
         }
     },

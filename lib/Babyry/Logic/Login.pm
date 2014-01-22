@@ -14,12 +14,11 @@ sub login {
     my $common = Babyry::Logic::Common->new;
     my $enc_pass = $common->enc_password($password);
 
-    my $dbh = $self->dbh('TEST_R');
+    my $dbh = $self->dbh('BABYRY_MAIN_R');
     my $sth = $dbh->prepare("select * from user_auth where email = ? and password_hash = ?");
     $sth->execute($email, $enc_pass);
     my $row = $sth->fetchrow_hashref();
     my $user_id = $row->{user_id};
-    $dbh->disconnect();
 
     if ($user_id) {
         return $user_id;
