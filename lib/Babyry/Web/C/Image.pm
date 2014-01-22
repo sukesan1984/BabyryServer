@@ -4,31 +4,40 @@ use strict;
 use warnings;
 use parent qw/Babyry::Web::C/;
 use Log::Minimal;
+use Data::Dumper;
+use Imager;
+
 use Babyry::Logic::Image;
+use Babyry::Logic::Session;
 
 my $image = Babyry::Logic::Image->new();
 
-sub image_get_signature {
+sub image_upload_sample_form {
     my ($class, $c) = @_;
 
-    my $signature = $image->create_signature();
-
-    return $c->render_json($signature);
+    $c->render('/image/upload_sample.tt');
 }
 
-sub image_after_upload {
+sub image_upload {
     my ($class, $c) = @_;
 
-    my $bucket = $c->req->param('bucket');
-    my $key = $c->req->param('key');
+    my $upload = $c->req->uploads->get_all('file');
+    my $path = $upload->path;
 
-    $image->set_image_id($bucket, $key);
+    my $img = Imager->new;
+    $img->read(file => $upload->path) or warn $img->errstr;
+    print $img->getwidth() . "\n";
+    print $img->getheight() . "\n";
 
-    my $url = $image->get_image_url($bucket, $key);
-    # TODO
-    # urlがおかしかったらアップロードが失敗していると見なしてエラー返す
+    my $time = time();
+    my $session = Babyry::Logic::Session->new();
+    my $user_id = $session->get($c->session->get('session_id'));
 
-    return $c->render_json(+{url=>$url});
+    if ($path =~ m{\.(jpg|jpeg)$}) {
+        $img->write(file => "/data/image/${user_id}_${time}.jpg", jpegquality => 20) or warn $img->errstr;
+    }
+
+    return $c->render_json(+{path=>$path});
 }
 
 1;

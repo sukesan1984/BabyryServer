@@ -1,12 +1,9 @@
 +{
-    '/image/get_signature' => +{
-        controller => 'Image', action => 'image_get_signature',
+    '/image/upload' => +{
+        controller => 'Image', action => 'image_upload',
     },
-    '/image/redirect' => +{
-        controller => 'Image', action => 'image_after_upload',
-    },
-    '/image/get_url' => +{
-        controller => 'Image', action => 'image_get_url',
-    },
+    '/image/upload_sample_form' => +{
+        controller => 'Image', action => 'image_upload_sample_form',
+    }
 }
 
