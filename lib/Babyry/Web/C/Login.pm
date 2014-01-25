@@ -22,11 +22,6 @@ sub execute {
 
     my $email    = $c->req->param('email');
     my $password = $c->req->param('password');
-    my $password_confirm = $c->req->param('password_confirm');
-
-    if ($password != $password_confirm) {
-        return $c->render('/login/index.tt', {error => 'UNMATCH_CONFIRM'});
-    }
 
     my $login = Babyry::Logic::Login->new;
     my $user_id = $login->login($email, $password);

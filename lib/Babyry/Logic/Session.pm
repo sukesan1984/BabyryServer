@@ -26,6 +26,7 @@ sub get {
     $sth->execute($session_id, $t);
     my $row = $sth->fetchrow_hashref();
     my $user_id = $row->{user_id};
+    $sth->finish();
     $dbh->disconnect();
 
     return $user_id;
