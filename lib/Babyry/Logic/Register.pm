@@ -9,7 +9,7 @@ use Babyry::Common;
 use Digest::MD5 qw/md5_hex/;
 
 use SQL::Abstract;
-use Babyry::Logic::Mail;
+use Babyry::Logic::AmazonSES;
 use Babyry::Logic::Sequence;
 use Babyry::Logic::Common;
 use Log::Minimal;
@@ -73,7 +73,7 @@ sub send_verify_mail {
 
     $email = 'meaning.sys@gmail.com'; # override for safety
 
-    my $mail = Babyry::Logic::Mail->new();
+    my $mail = Babyry::Logic::AmazonSES->new();
     $mail->set_subject('てすと');
     $mail->set_body(<<"TEXT");
     please click this link to verify your account.

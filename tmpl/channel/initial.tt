@@ -1,0 +1,18 @@
+[% WRAPPER 'include/layout.tt' %]
+登録されているチャンネルがありません<br><br><br>
+<form action="[% uri_for('/channel/create') %]" role="form" method="post">
+  <div class="form-group">
+    <label for="channel_name">新規チャンネルを作成する</label>
+    <input id="channel_name" type="text" name="channel_name" placeholder="Enter Channel Name" class="form-control"/>
+  </div>
+  <input type="submit" value="Submit" class="btn btn-default"/>
+</form>
+<br>
+<br>
+<form action="[% uri_for('/channel/join') %]" role="form" method="post">
+  <div class="form-group">
+    <label for="invite_code">招待コードを入力する</label>
+    <input id="invite_code" type="text" name="invite_code" placeholder="Enter Invite Code" class="form-control"/>
+  </div>
+  <input type="submit" value="Submit" class="btn btn-default"/>
+</form>[% END %]

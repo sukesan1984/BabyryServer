@@ -3,7 +3,13 @@ use strict;
 use warnings;
 use utf8;
 
+use Digest::MD5 qw/md5_hex/;
 use parent qw/Babyry::Logic/;
+
+sub create {
+    my ($self, $user_id) = @_;
+    return md5_hex(time . $user_id);
+}
 
 sub set {
     my ($self, $user_id, $session_id) = @_;
