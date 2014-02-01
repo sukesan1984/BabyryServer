@@ -28,6 +28,13 @@ sub index {
     });
 }
 
+sub detail {
+    my ($class, $c) = @_;
+    return $c->render('detail/index.tx', {
+
+    });
+}
+
 sub reset_counter {
     my ($class, $c) = @_;
     $c->session->remove('counter');

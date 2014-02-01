@@ -43,6 +43,10 @@
   </head>
 
   <body>
+
+    : if $no_header {
+    : }
+    : else {
     <nav class="navbar navbar-default" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header" style="position: relative;">
@@ -60,11 +64,15 @@
         </div>
       </div>
     </nav>
+    : }
 
+    : if $container_fluid {
+    <div class="container-fluid">
+    : }
+    : else {
     <div class="container">
-      <div id="main">
-        : block content -> {}
-      </div>
+    : }
+      : block content -> {}
     </div>
 
     <script src="<: uri_for('/static/jquery/js/jquery.min.js') :>"></script>

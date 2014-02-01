@@ -2,6 +2,9 @@
     '/' => +{
         controller => 'Test', action => 'index',
     },
+    '/detail/:id' => +{
+        controller => 'Test', action => 'detail',
+    },
     '/reset_counter' => +{
         controller => 'Test', action => 'reset_counter',
     },

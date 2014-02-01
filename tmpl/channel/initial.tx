@@ -1,4 +1,4 @@
-: cascate base
+: cascade base
 : around content -> {
 登録されているチャンネルがありません<br/><br/><br/>
 <form action="<: uri_for('/channel/create') :>" role="form" method="post">
