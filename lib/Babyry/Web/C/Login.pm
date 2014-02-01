@@ -10,7 +10,7 @@ use Babyry::Logic::Session;
 sub index {
     my ($class, $c) = @_;
 
-    return $c->render('login/index.tt');
+    return $c->render('login/index.tx');
 }
 
 sub execute {
@@ -29,7 +29,7 @@ sub execute {
         $session->set($user_id, $session_id);
         return $c->redirect('/');
     } else {
-        return $c->render('/login/index.tt', {error => 'INVALID_PASSWORD'});
+        return $c->render('/login/index.tx', {error => 'INVALID_PASSWORD'});
     }
 }
 

@@ -1,4 +1,6 @@
-[% WRAPPER 'include/layout.tt' with has_footer = 1 %]
+: cascade base
+
+: around head -> {
 <style>
   .image {
     margin: 0 auto;
@@ -9,20 +11,20 @@
     width: 100%;
     max-width: 320px;
   }
-  
 </style>
-<ul class="nav nav-tabs">
-  <li class="active"><a href="#g1" data-toggle="tab">Group1</a></li>
-  <li><a href="#g2" data-toggle="tab">Group2</a></li>
-  <li><a href="#g3" data-toggle="tab">Group3</a></li>
-</ul>
-<div class="tab-content">
-  <div id="g1" class="tab-pane active"></div>
-  <div id="g2" class="tab-pane"></div>
-  <div id="g3" class="tab-pane"></div>
-</div>
+: }
+
+: around javascript -> {
+<script type="text/javascript" src="<: uri_for('/static/backbone/js/backbone-min.js') :>""></script>
+<script type="text/javascript" src="<: uri_for('/static/js/home.js') :>""></script>
+: }
+
+: around content -> {
+
+<button class="btn btn-default btn-lg btn-block">投稿</button>
+
 <div class="timeline">
-  <div class="item">
+  <div class="item col-xs-6">
     <div class="image"><img src="http://lorempixel.com/320/240/people/" class="img-thumbnail"/></div>
     <div class="comment panel panel-default">
       <div class="panel-heading">comment</div>
@@ -33,7 +35,7 @@
       </ul>
     </div>
   </div>
-  <div class="item">
+  <div class="item col-xs-6">
     <div class="image"><img src="http://lorempixel.com/320/240/people/" class="img-thumbnail"/></div>
     <div class="comment panel panel-default">
       <div class="panel-heading">comment</div>
@@ -44,7 +46,7 @@
       </ul>
     </div>
   </div>
-  <div class="item">
+  <div class="item col-xs-6">
     <div class="image"><img src="http://lorempixel.com/320/240/people/" class="img-thumbnail"/></div>
     <div class="comment panel panel-default">
       <div class="panel-heading">comment</div>
@@ -55,4 +57,5 @@
       </ul>
     </div>
   </div>
-</div>[% END %]
+</div>
+: }

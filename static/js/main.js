@@ -10,6 +10,4 @@
 
 }).call(this);
 
-/*
 //# sourceMappingURL=../../static/js/main.js.map
-*/

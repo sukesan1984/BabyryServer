@@ -13,7 +13,7 @@ my $channel = Babyry::Logic::Channel->new();
 sub initial {
     my ($class, $c) = @_;
 
-    $c->render('/channel/initial.tt');
+    $c->render('/channel/initial.tx');
 }
 
 sub create {

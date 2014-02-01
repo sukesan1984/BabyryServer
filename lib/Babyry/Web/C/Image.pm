@@ -15,7 +15,7 @@ my $image = Babyry::Logic::Image->new();
 sub image_upload_sample_form {
     my ($class, $c) = @_;
 
-    $c->render('/image/upload_sample.tt');
+    $c->render('/image/upload_sample.tx');
 }
 
 sub image_upload {

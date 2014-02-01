@@ -1,0 +1,12 @@
+: cascade base
+
+: around content -> {
+<div>
+  : if $error_message == 'EXPIRED' {
+  ALREADY EXPIRED
+  : }
+  : elsif error_message == 'NOT_EXIST' {
+  NOT EXIST
+  : }
+</div>
+: }

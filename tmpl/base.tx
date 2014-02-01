@@ -2,25 +2,13 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>[% title %]</title>
+    <title><: $title :></title>
     <meta http-equiv="Content-Style-Type" content="text/css">
     <meta http-equiv="Content-Script-Type" content="text/javascript">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="format-detection" content="telephone=no">
-    <script src="[% uri_for('/static/js/jquery-2.0.3.min.js') %]"></script>
-    <link href="[% uri_for('/static/bootstrap/css/bootstrap.css') %]" rel="stylesheet" type="text/css">
-    <script src="[% uri_for('/static/bootstrap/js/bootstrap.js') %]"></script>
-    <script src="[% uri_for('/static/js/es5-shim.min.js') %]"></script>
-    <script src="[% uri_for('/static/js/micro_template.js') %]"></script>
-    <script src="[% uri_for('/static/js/strftime.js') %]"></script>
-    <script src="[% uri_for('/static/js/sprintf-0.7-beta1.js') %]"></script>
-    <script src="[% uri_for('/static/js/micro-location.js') %]"></script>
-    <script src="[% uri_for('/static/js/micro_dispatcher.js') %]"></script>
-    <script src="[% uri_for('/static/js/xsrf-token.js') %]"></script>
-    <link href="[% static_file('/static/css/main.css') %]" rel="stylesheet" type="text/css" media="screen">
-    <script src="[% static_file('/static/js/main.js') %]"></script>
-    <!--if lt IE 9script(src="http://html5shiv.googlecode.com/svn/trunk/html5.js")
-    -->
+    <link href="<: uri_for('/static/bootstrap/css/bootstrap.css') :>" rel="stylesheet" type="text/css">
+    <link href="<: static_file('/static/css/main.css') :>" rel="stylesheet" type="text/css" media="screen">
     <style>
       #footer {
         height: 46px;
@@ -51,16 +39,15 @@
         width: 33.4%;
       }
     </style>
+    : block head -> {}
   </head>
   <body>
     <div class="navbar navbar-default">
       <div class="container">
         <div class="navbar-header"><a href="#" class="navbar-brand">Babyry</a><br>
-          [% IF user_id %]
-            Welcome [% user_id %]
-            <a href="/logout">logout</a>
-          [% END %]
-
+          : if $user_id {
+          Welcome <: $user_id :><a href="/logout">logout</a>
+          : }
           <div class="nav-collapse collapse">
             <ul class="nav navbar-nav">
               <li class="active"><a href="#">Home</a></li>
@@ -70,14 +57,26 @@
             </ul>
           </div>
         </div>
-        <!-- /.navbar-inner-->
       </div>
-      <!-- /.container-->
     </div>
-    <!-- /.navbar-->
     <div class="container">
-      <div id="main">[% content %]</div>
-    </div>[% IF has_footer %]
-    <footer id="footer"><a href="#" class="footer-tab"><span>ホーム</span></a><a href="#" class="footer-tab"><span>投稿</span></a><a href="#" class="footer-tab"><span>お知らせ</span></a></footer>[% END %]
+      <div id="main">
+        : block content -> {}
+      </div>
+    </div>
+
+    <script src="<: uri_for('/static/jquery/js/jquery.min.js') :>"></script>
+    <script src="<: uri_for('/static/bootstrap/js/bootstrap.min.js') :>"></script>
+    <script src="<: uri_for('/static/underscore/js/underscore-min.js') :>"></script>
+    <!--script(src!='<: uri_for('/static/js/es5-shim.min.js') :>')-->
+    <!--script(src!='<: uri_for('/static/js/micro_template.js') :>')-->
+    <!--script(src!='<: uri_for('/static/js/strftime.js') :>')-->
+    <!--script(src!='<: uri_for('/static/js/sprintf-0.7-beta1.js') :>')-->
+    <!--script(src!='<: uri_for('/static/js/micro-location.js') :>')-->
+    <!--script(src!='<: uri_for('/static/js/micro_dispatcher.js') :>')-->
+    <!--script(src!='<: uri_for('/static/js/xsrf-token.js') :>')-->
+    <script src="<: static_file('/static/js/main.js') :>"></script>
+    <!-- if lt IE 9script(src="http://html5shiv.googlecode.com/svn/trunk/html5.js') -->
+    : block javascript -> {}
   </body>
 </html>

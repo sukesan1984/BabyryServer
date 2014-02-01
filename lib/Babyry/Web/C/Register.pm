@@ -10,7 +10,7 @@ use Babyry::Logic::Register;
 sub index {
     my ($class, $c) = @_;
 
-    return $c->render('/register/index.tt');
+    return $c->render('/register/index.tx');
 }
 
 sub execute {
@@ -21,9 +21,9 @@ sub execute {
     my $password_confirm = $c->req->param('password_confirm');
 
     # validation
-    $c->render('register/index.tt', {error => 'INVALID_PASSWORD'})
+    $c->render('register/index.tx', {error => 'INVALID_PASSWORD'})
         if $class->validate_password($password);
-    $c->render('register/index.tt', {error => 'INCONSISTENT_PASSWORD'})
+    $c->render('register/index.tx', {error => 'INCONSISTENT_PASSWORD'})
         if $class->validate_password_inconsisence($password, $password_confirm);
 
     my $logic = Babyry::Logic::Register->new;
@@ -52,7 +52,7 @@ sub verify {
     if ( $error ) {
         # $errorには'EXPIRED' or 'NOT_EXIST'が返る
         # 既にverify済の場合はerrorにはならない
-        return $c->render('register/verify_error.tt', { error_message => $error });
+        return $c->render('register/verify_error.tx', { error_message => $error });
     }
     # 一回sessionをクリアしてからloginページへリダイレクト
     $c->session->remove('session_id');

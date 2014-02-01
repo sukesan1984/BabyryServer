@@ -9,7 +9,7 @@ use Babyry::Logic::Login;
 sub email {
     my ($class, $c) = @_;
 
-    return $c->render('invite/email.tt', {});
+    return $c->render('invite/email.tx', {});
 }
 
 

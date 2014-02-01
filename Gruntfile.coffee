@@ -22,7 +22,7 @@ module.exports = (grunt) ->
           cwd: 'jade/'
           src: ['**/**.jade']
           dest: "tmpl"
-          ext: '.tt'
+          ext: '.tx'
           filter: (path) ->
             not path.match(/\/_parts\//)
         ]

@@ -22,7 +22,7 @@ sub index {
     }
 
     my $messages = Babyry::Logic::Test->new->message_get();
-    return $c->render('index.tt', {
+    return $c->render('index.tx', {
         messages => $messages,
         user_id  => $user_id,
     });
