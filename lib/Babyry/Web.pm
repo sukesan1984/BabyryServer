@@ -42,6 +42,13 @@ use Babyry::Web::View;
     }
 }
 
+sub render_json_validation_error {
+    my ($c, $validator) = @_;
+
+    my $messages = $validator->get_messages();
+    $c->render_json( +{ error_messages => $messages } );
+}
+
 
 # for your security
 __PACKAGE__->add_trigger(
