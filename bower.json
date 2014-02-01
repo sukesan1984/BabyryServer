@@ -14,17 +14,25 @@
   ],
   "dependencies": {
     "jquery": "~2.0.3",
-    "bootstrap": "~3.0.0"
+    "bootstrap": "~3.0.0",
+    "backbone": "~1.1.0",
+    "underscore": "~1.5.2"
   },
   "exportsOverride": {
     "jquery": {
-      "js": "**/*.js",
+      "js": ["**/*.js", "**/*.map"],
       "css": "**/*.css"
     },
     "bootstrap": {
-      "js": "**/*.js",
+      "js": ["**/*.js", "**/*.map"],
       "css": "**/*.css",
       "fonts": "**/glyphicons-halflings-regular.*"
+    },
+    "backbone": {
+      "js": ["**/backbone*.js", "**/backbone*.map"]
+    },
+    "underscore": {
+      "js": ["**/underscore*.js", "**/underscore*.map"]
     }
   }
 }
