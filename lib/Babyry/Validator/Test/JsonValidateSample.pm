@@ -1,4 +1,4 @@
-package Babyry::Validator::Test::Index;
+package Babyry::Validator::Test::JsonValidateSample;
 
 use strict;
 use warnings;

@@ -11,7 +11,7 @@ use Babyry::Logic::Session;
 use Babyry::Logic::Channel;
 
 sub index {
-    my ($class, $c) = @_;
+    my ($class, $c, $p, $v) = @_;
 
     my $user_id = $c->stash->{'user_id'};
 
@@ -47,6 +47,17 @@ sub message_add {
     my $message = $c->req->param('message');
     $logic->message_add($message);
     return $c->redirect('/');
+}
+
+sub json_validate_sample {
+    my ($class, $c, $p, $validator) = @_;
+
+    if ( $validator->has_error ) {
+        $validator->set_error_message('test');
+        return $c->render_json_validation_error($validator);
+    }
+
+    return $c->render_json( +{} );
 }
 
 
