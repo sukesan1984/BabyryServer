@@ -11,51 +11,75 @@
     width: 100%;
     max-width: 320px;
   }
+
+  .item {
+    border: 1px solid #eee;
+    border-radius: 2px;
+    padding: 4px;
+    margin: 4px;
+  }
+
+  /* salvattore */
+  .timeline[data-columns]::before {
+    content: '2 .column.size-1of2';
+  }
+  .column {
+    float: left;
+  }
+  .size-1of2 {
+    width: 50%;
+  }
+  [data-columns]::before {
+    display: none;
+  }
 </style>
 : }
 
 : around javascript -> {
-<script type="text/javascript" src="<: uri_for('/static/backbone/js/backbone-min.js') :>""></script>
-<script type="text/javascript" src="<: uri_for('/static/js/home.js') :>""></script>
+<script type="text/javascript" src="<: uri_for('/static/backbone/js/backbone-min.js') :>"></script>
+<!-- grid layout
+  http://salvattore.com/
+  http://suprb.com/apps/nested/
+-->
+<script type="text/template" id="template-item">
+  <div class="item">
+    <div class="image"><img src="http://lorempixel.com/320/<%= y %>/people/" class="img-thumbnail"/></div>
+    <div class="comment panel panel-default">
+      <div class="panel-heading">comment</div>
+      <ul class="list-group">
+        <% while (i++ < n) { %>
+          <li class="list-group-item">comment<%= i %></li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</script>
+<script type="text/javascript" src="<: uri_for('/static/salvattore/js/salvattore.min.js') :>"></script>
+<script type="text/javascript" src="<: uri_for('/static/js/home.js') :>"></script>
+<script type="text/javascript">
+  $(function(){
+    var tmpl = _.template($('#template-item').html());
+    var grid = $('.timeline').get(0);
+    var load_contents = function () {
+      var item = [];
+      for (var i in _.range(10)) {
+        item.push(document.createElement('article'));
+      }
+      salvattore.append_elements(grid, item);
+      for (var i = 0; i < item.length; i++) {
+        item[i].outerHTML = tmpl({ i: 0, n: Math.floor(Math.random()*5)+1, y: Math.floor(Math.random()*100 + 240) });
+      }
+    };
+    load_contents();
+    $('#load-more').on('click', load_contents);
+  });
+</script>
 : }
 
 : around content -> {
-
 <button class="btn btn-default btn-lg btn-block">投稿</button>
 
-<div class="timeline">
-  <div class="item col-xs-6">
-    <div class="image"><img src="http://lorempixel.com/320/240/people/" class="img-thumbnail"/></div>
-    <div class="comment panel panel-default">
-      <div class="panel-heading">comment</div>
-      <ul class="list-group">
-        <li class="list-group-item">comment0</li>
-        <li class="list-group-item">comment1</li>
-        <li class="list-group-item">comment2</li>
-      </ul>
-    </div>
-  </div>
-  <div class="item col-xs-6">
-    <div class="image"><img src="http://lorempixel.com/320/240/people/" class="img-thumbnail"/></div>
-    <div class="comment panel panel-default">
-      <div class="panel-heading">comment</div>
-      <ul class="list-group">
-        <li class="list-group-item">comment0</li>
-        <li class="list-group-item">comment1</li>
-        <li class="list-group-item">comment2</li>
-      </ul>
-    </div>
-  </div>
-  <div class="item col-xs-6">
-    <div class="image"><img src="http://lorempixel.com/320/240/people/" class="img-thumbnail"/></div>
-    <div class="comment panel panel-default">
-      <div class="panel-heading">comment</div>
-      <ul class="list-group">
-        <li class="list-group-item">comment0</li>
-        <li class="list-group-item">comment1</li>
-        <li class="list-group-item">comment2</li>
-      </ul>
-    </div>
-  </div>
-</div>
+<div class="timeline row" data-columns></div>
+
+<button class="btn btn-default btn-lg btn-block" id="load-more">読み込み</button>
 : }
