@@ -41,8 +41,10 @@
   http://salvattore.com/
   http://suprb.com/apps/nested/
 -->
+<script type="text/javascript" src="<: uri_for('/static/salvattore/js/salvattore.min.js') :>"></script>
+<script type="text/javascript" src="<: uri_for('/static/js/home.js') :>"></script>
 <script type="text/template" id="template-item">
-  <div class="item">
+  <div class="item" onclick="location.href='/detail/123'">
     <div class="image"><img src="http://lorempixel.com/320/<%= y %>/people/" class="img-thumbnail"/></div>
     <div class="comment panel panel-default">
       <div class="panel-heading">comment</div>
@@ -54,8 +56,6 @@
     </div>
   </div>
 </script>
-<script type="text/javascript" src="<: uri_for('/static/salvattore/js/salvattore.min.js') :>"></script>
-<script type="text/javascript" src="<: uri_for('/static/js/home.js') :>"></script>
 <script type="text/javascript">
   $(function(){
     var tmpl = _.template($('#template-item').html());
