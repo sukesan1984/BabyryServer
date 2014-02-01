@@ -12,6 +12,13 @@ sub form_validator_conf {
 }
 
 sub do_logic_validate {
+    my ($self, $c, $validator) = @_;
+
+    my $id = $c->req->param('id');
+
+    if ( ! $id ) {
+        $validator->set_error(id => 'NOT_NULL');
+    }
 }
 
 1;

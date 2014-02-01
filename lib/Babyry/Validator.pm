@@ -15,7 +15,7 @@ sub validate {
     $validator->load_constraints(qw/DATE Email URL File Number/);
 
     $self->do_form_validate($validator);
-    $self->do_logic_validate($validator);
+    $self->do_logic_validate($c, $validator);
 
     return $validator;
 }
@@ -28,7 +28,7 @@ sub do_form_validate {
 }
 
 sub do_logic_validate {
-    croak("This method must be overridden.");
+    # Please implement do_logic_validate to override me.
 }
 
 1;
