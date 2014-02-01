@@ -11,5 +11,9 @@
     '/message/add' => +{
         controller => 'Test', action => 'message_add',
     },
+    '/json_validate_sample' => +{
+        controller => 'Test', action => 'json_validate_sample',
+        filters => [qw/validator/]
+    }
 }
 

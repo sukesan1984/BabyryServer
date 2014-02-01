@@ -11,6 +11,12 @@ use Encode qw/decode_utf8/;
 use Log::Minimal;
 use Path::Class;
 use Carp;
+use String::CamelCase qw/camelize/;
+
+use constant +{
+    FILTER_RESULT_RESPONSE  => 'response',
+    FILTER_RESULT_VALIDATOR => 'validator',
+};
 
 my $router = Babyry::Web::Router->new;
 {
@@ -55,13 +61,14 @@ sub dispatch {
     eval "require $controller_class" or croak "failed to load controller class $controller_class: $@";
 
     # filter
-    if ( my $filter_result = _filter($c, $p, $controller_class) ) {
-        return $filter_result;
+    my $filter_results = _filter($c, $p, $controller_class);
+    if ( $filter_results->{ FILTER_RESULT_RESPONSE() } ) {
+        return $filter_results;
     }
     delete $p->{filters};
 
     # process
-    my $result = eval { $controller_class->$action($c, $p) };
+    my $result = eval { $controller_class->$action($c, $p, $filter_results->{ FILTER_RESULT_VALIDATOR() }) };
     if ( my $e = $@ ) {
         critf("Internal Server Error: %s", $e);
         return $c->res_500();
@@ -76,6 +83,7 @@ sub _filter {
     my $web_root = $ENV{DEBUG_WEB_ROOT} || ref Babyry->context;
     my $args     = $p->{filter_args}    || undef;
 
+    my $results = {};
     for my $filter ( @$filters ) {
         my $res;
 
@@ -89,13 +97,25 @@ sub _filter {
 
             $res = $filter_class->$action($c, $p, $args);
             debugf("processed the filter: %s::%s", $filter_class, $action) if $ENV{BABYRY_DEBUG};
+        } elsif ( $filter eq 'validator' ) {
+            my $validator_class =  $controller_class;
+            $validator_class    =~ s/Web::C/Validator/;
+            $validator_class    = join('::', $validator_class, camelize($p->{action}));
+
+            eval "require $validator_class" or die "failed to load filter class: $validator_class";
+            $res = $validator_class->validate($c, $p, $args);
         } else {
             $res = $controller_class->$filter($c, $p, $args);
             debugf("processed the filter: %s::%s", $controller_class, $filter) if $ENV{BABYRY_DEBUG};
         }
-        return $res if ref $res eq "Amon2::Web::Response";
+
+        my $res_type = ref $res eq 'Amon2::Web::Response'  ? FILTER_RESULT_RESPONSE  :
+                       ref $res eq 'Babyry::FormValidator' ? FILTER_RESULT_VALIDATOR : '';
+        $results->{$res_type} = $res;
     }
-    return;
+
+    $results->{ FILTER_RESULT_VALIDATOR() } ||= Babyry::FormValidator->new($c->req);
+    return $results;
 }
 
 # TODO implement
