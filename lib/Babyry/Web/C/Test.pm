@@ -8,18 +8,11 @@ use Log::Minimal;
 
 use Babyry::Logic::Test;
 use Babyry::Logic::Session;
-use Babyry::Logic::Channel;
 
 sub index {
     my ($class, $c, $p, $v) = @_;
 
     my $user_id = $c->stash->{'user_id'};
-
-    # redirect if there is no channel
-    my $channel_num = Babyry::Logic::Channel->new()->get_channel_num($user_id);
-    if(!$channel_num) {
-        return $c->redirect('/channel/initial');
-    }
 
     my $messages = Babyry::Logic::Test->new->message_get();
     return $c->render('index.tx', {
