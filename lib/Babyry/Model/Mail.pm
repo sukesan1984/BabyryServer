@@ -12,6 +12,16 @@ use Log::Minimal;
 
 use Babyry::Common;
 
+
+sub send {
+    my ($self, $params) = @_;
+
+    $self->set_subject( $params->{subject} );
+    $self->set_body( $params->{body} );
+    $self->set_address( $params->{address} );
+    $self->send_mail();
+}
+
 sub set_subject {
     my ($self, $subject) = @_;
     $self->{subject} = $subject;
@@ -30,7 +40,7 @@ sub set_address {
 sub send_mail {
     my ($self) = @_;
 
-    die 'there is no subject or body or address.' if (!$self->{body} || !$self->{address} || !$self->{subject});
+    critf('there is no subject or body or address.') if (!$self->{body} || !$self->{address} || !$self->{subject});
 
     my $smtp_server = '10.0.0.1';
 

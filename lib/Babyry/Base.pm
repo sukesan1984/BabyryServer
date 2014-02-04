@@ -8,6 +8,7 @@ use Babyry::DBI;
 use DBIx::Simple;
 use Teng::Schema::Loader;
 use SQL::Abstract;
+use Data::Dump;
 
 sub dbh {
     my ($self, $label) = @_;
@@ -43,6 +44,12 @@ sub sql {
     my ($self) = @_;
     return SQL::Abstract->new;
 }
+
+sub dump {
+    my ($self, $params) = @_;
+    return Data::Dump::dump($params);
+}
+
 
 1;
 

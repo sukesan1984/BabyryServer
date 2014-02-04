@@ -2,23 +2,25 @@ package Babyry::Web::C::Invite;
 
 use strict;
 use warnings;
-use parent qw/Babyry::Web::C/;
+use parent qw/Babyry::Web::C Babyry::Base/;
 use Log::Minimal;
-use Babyry::Logic::Login;
+use Babyry::Logic::Invite;
 
 sub index {
-    my ($class, $c) = @_;
+    my ($self, $c) = @_;
 
     return $c->render('invite/index.tx', {});
 }
 
 sub execute {
-    my ($class, $c) = @_;
+    my ($self, $c) = @_;
+
+    warnf("Web/C/Invite");
+
+    return $c->render_500() if ! $c->stash->{user_id};
 
     my $params = {
-        $email         => $c->req->param('email')         || '',
-        $invite_method => $c->req->param('invite_method') || '',
-        $invitee_user  => $c->stash->{user_id}            || 0,
+        user_id  => $c->stash->{user_id},
     };
     my $logic = Babyry::Logic::Invite->new;
 
@@ -31,8 +33,9 @@ sub execute {
         critf('Failed to invite params:%s error:%s', $self->dump($params), $self->dump( $ret->{error} ));
         $c->render_500();
     }
-
-    $c->render('invite/completed.tt', +{});
+use YAML;
+warnf(Dump $ret);
+    $c->render('invite/completed.tx', $ret);
 }
 
 1;

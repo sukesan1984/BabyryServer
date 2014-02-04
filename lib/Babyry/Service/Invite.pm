@@ -4,37 +4,40 @@ use strict;
 use warnings;
 use utf8;
 use parent qw/Babyry::Base/;
-
-use constant {
-    INVITE_METHOD_EMAIL => 'email',
-};
+use Babyry::Model::Invite;
+use Log::Minimal;
+use URI::Escape;
 
 sub execute {
     my ($self, $params) = @_;
 
-    my $model = Babyry::Model::InviteList->new;
-
-    my $row = eval { $model->create($params); };
+    my $teng = $self->teng('BABYRY_MAIN_W');
+    $teng->txn_begin;
+    my $model = Babyry::Model::Invite->new(teng => $teng);
+    my $row = eval {
+        my $row = $model->create($params);
+        $teng->txn_commit;
+        $row;
+    };
     if ( my $e = $@ ) {
-        croak($e);
+        $teng->txn_rollback;
+        croakf($e);
     }
 
-    if ( $invite_method eq INVITE_METHOD_EMAIL ) {
-        my $mail_body   = $self->_get_invite_mail_body( $row->{invite_code} );
-        my $model_email = Babyry::Model::Mail->new;
-        eval { $model_email->send(); };
-        if ( my $e = $@ ) {
-            croak($e);
-        }
-        return;
-    }
-    return $text;
+    return $self->_create_invite_mail_params( @{$row}{qw/invite_code user_id/} );
 }
 
-sub _get_invite_mail_body {
-    my ($self, $invite_code) = @_;
+sub _create_invite_mail_params {
+    my ($self, $invite_code, $user_id) = @_;
 
-    # TODO implement
+    my %mail_params = (
+        subject => uri_escape( Babyry::Common->config->{invite}{mail}{subject} ),
+    );
+
+    my $body_tmpl = Babyry::Common->config->{invite}{mail}{body};
+    $mail_params{body} = uri_escape( sprintf($body_tmpl, $invite_code, $invite_code) );
+
+    return \%mail_params;
 }
 
 1;
