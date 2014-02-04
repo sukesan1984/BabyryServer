@@ -1,4 +1,4 @@
-package Babyry::Model::User;
+package Babyry::Model::Register_Token;
 
 use strict;
 use warnings;
@@ -10,11 +10,11 @@ sub create {
     my ($self, $teng, $params) = @_;
 
     $teng->insert(
-        'user',
+        'register_token',
         {
             user_id     => $params->{user_id},
-            created_at  => $params->{created_at},
-            updated_at  => $params->{updated_at},
+            token       => $params->{token},
+            expired_at  => $params->{expired_at},
         }
     );
 }

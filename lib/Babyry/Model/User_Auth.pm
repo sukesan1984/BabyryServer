@@ -1,4 +1,4 @@
-package Babyry::Model::User;
+package Babyry::Model::User_Auth;
 
 use strict;
 use warnings;
@@ -10,11 +10,11 @@ sub create {
     my ($self, $teng, $params) = @_;
 
     $teng->insert(
-        'user',
+        'user_auth',
         {
             user_id     => $params->{user_id},
-            created_at  => $params->{created_at},
-            updated_at  => $params->{updated_at},
+            email        => $params->{email},
+            password_hash  => $params->{password_hash},
         }
     );
 }
