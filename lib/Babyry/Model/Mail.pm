@@ -1,9 +1,9 @@
-package Babyry::Logic::Mail;
+package Babyry::Model::Mail;
 use strict;
 use warnings;
 use utf8;
 
-use parent qw/Babyry::Logic/;
+use parent qw/Babyry::Base/;
 
 use Jcode;
 use Net::SMTP;

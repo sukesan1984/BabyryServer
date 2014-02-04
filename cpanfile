@@ -36,6 +36,7 @@ requires 'String::Random',                  '0.25';
 requires 'Amon2::Plugin::Web::FormValidator::Simple', '0.0.4';
 requires 'Plack::Middleware::BetterStackTrace', '0.02';
 requires 'Data::Dump', '1.22';
+require 'String::Random',                    '0.26';
 
 on configure => sub {
     requires 'Module::Build', '0.38';
