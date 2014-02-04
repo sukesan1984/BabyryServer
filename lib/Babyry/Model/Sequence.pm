@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use utf8;
 
-use parent qw/Babyry::Model/;
+use parent qw/Babyry::Base/;
 
 sub get_id {
     my ($self, $table) = @_;

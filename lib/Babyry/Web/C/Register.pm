@@ -4,76 +4,38 @@ use strict;
 use warnings;
 use parent qw/Babyry::Web::C/;
 use Log::Minimal;
-use Babyry::Logic::Login;
 use Babyry::Logic::Register;
 
 sub index {
-    my ($class, $c) = @_;
+    my ($self, $c) = @_;
 
     return $c->render('/register/index.tx');
 }
 
 sub execute {
-    my ($class, $c) = @_;
+    my ($self, $c) = @_;
 
-    my $email    = $c->req->param('email');
-    my $password = $c->req->param('password');
-    my $password_confirm = $c->req->param('password_confirm');
-
-    # validation
-    $c->render('register/index.tx', {error => 'INVALID_PASSWORD'})
-        if $class->validate_password($password);
-    $c->render('register/index.tx', {error => 'INCONSISTENT_PASSWORD'})
-        if $class->validate_password_inconsisence($password, $password_confirm);
+    my $params = {
+        email => $c->req->param('email') || '',
+        password => $c->req->param('password') || '',
+        password_confirm => $c->req->param('password_confirm') || '',
+    };
 
     my $logic = Babyry::Logic::Register->new;
-    $logic->execute({
-        email    => $email,
-        password => $password,
-    });
-    $c->redirect('/invite/email');
-}
 
-# memo ここでは既にsessionを持っているかは見ない
-#      受け取り可能なemailアドレスかどうかのチェックができればいいため
-sub verify {
-    my ($class, $c) = @_;
-
-    my $token = $c->req->param('token');
-    if ( ! $token ) {
-        return $c->redirect('/');
+    my $ret = eval { $logic->execute($params); };
+    if ( my $e = $@ ) {
+critf($e);
+#        critf('Failed to register params:%s error:%s', $self->dump($params), $e);
+#        $c->render_500();
+    }
+    if ( $ret->{error} ) {
+critf($ret->{error});
+#        critf('Failed to register params:%s error:%s', $self->dump($params), $self->dump( $ret->{error} ));
+#        $c->render_500();
     }
 
-    my $logic = Babyry::Logic::Register->new;
-    my $error = eval { $logic->verify($token) };
-    if ($@) {
-        return $c->res_500();
-    }
-    if ( $error ) {
-        # $errorには'EXPIRED' or 'NOT_EXIST'が返る
-        # 既にverify済の場合はerrorにはならない
-        return $c->render('register/verify_error.tx', { error_message => $error });
-    }
-    # 一回sessionをクリアしてからloginページへリダイレクト
-    $c->session->remove('session_id');
-    $c->redirect('/login');
+    $c->redirect('/');
 }
-
-# TODO move to Filter
-sub validate_password {
-    my ($self, $password) = @_;
-    # TODO validate used chars
-    #
-    # empty
-    # too short
-    # not email format
-    # already registed
-}
-
-sub validate_password_inconsisence {
-    my ($self, $password, $password_confirm) = @_;
-    return 1 if $password ne $password_confirm;
-}
-
+ 
 1;
-
