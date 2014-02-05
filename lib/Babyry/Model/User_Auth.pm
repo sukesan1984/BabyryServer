@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use utf8;
 use parent qw/Babyry::Base/;
-
+use Log::Minimal;
 
 sub create {
     my ($self, $teng, $params) = @_;
@@ -19,6 +19,23 @@ sub create {
             updated_at => $params->{updated_at},
         }
     );
+}
+
+sub login {
+    my ($self, $teng, $params) = @_;
+
+infof("$params->{email} $params->{enc_pass}");
+    my $res = $teng->single(
+        'user_auth',
+        { 
+            email => $params->{email},
+            password_hash => $params->{enc_pass},
+        }
+    );
+    my $user_id = $res->user_id;
+infof("$user_id");
+
+    return $user_id;
 }
 
 1;

@@ -5,7 +5,6 @@ use warnings;
 use parent qw/Babyry::Web::C/;
 use Log::Minimal;
 use Babyry::Logic::Login;
-use Babyry::Logic::Session;
 
 sub index {
     my ($class, $c) = @_;
@@ -16,10 +15,33 @@ sub index {
 sub execute {
     my ($class, $c) = @_;
 
-    my $email    = $c->req->param('email');
-    my $password = $c->req->param('password');
+    my $params = {
+        email => $c->req->param('email') || '',
+        password => $c->req->param('password') || '',
+    };
+infof("$params->{email} $params->{password}");
 
-    my $login = Babyry::Logic::Login->new;
+    my $logic = Babyry::Logic::Login->new;
+
+    my $ret = eval { $logic->execute($params); };
+    if ( my $e = $@ ) { 
+critf($e);
+#        critf('Failed to register params:%s error:%s', $self->dump($params), $e);
+#        $c->render_500();
+    }
+    if ( $ret->{error} ) {
+critf($ret->{error});
+#        critf('Failed to register params:%s error:%s', $self->dump($params), $self->dump( $ret->{error} ));
+#        $c->render_500();
+    }
+
+    if ($ret->{user_id}) {
+        return $c->redirect('/');
+    } else {
+        return $c->render('/login/index.tx', {error => 'INVALID_PASSWORD'});
+    }
+
+=pot
     my $user_id = $login->login($email, $password);
 
     if ($user_id) {
@@ -31,6 +53,7 @@ sub execute {
     } else {
         return $c->render('/login/index.tx', {error => 'INVALID_PASSWORD'});
     }
+=cut
 }
 
 sub logout {
