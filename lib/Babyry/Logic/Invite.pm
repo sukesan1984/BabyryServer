@@ -11,8 +11,6 @@ use Log::Minimal;
 sub execute {
     my ($self, $params) = @_;
     
-    warnf("Logic/Invite");
-
     my $service = Babyry::Service::Invite->new;
     return $service->execute($params);
 }

@@ -11,6 +11,8 @@ use URI::Escape;
 sub execute {
     my ($self, $params) = @_;
 
+    infof('invite_method=%s user_id=%d', @{$params}{qw/invite_method user_id/});
+
     my $teng = $self->teng('BABYRY_MAIN_W');
     $teng->txn_begin;
     my $model = Babyry::Model::Invite->new(teng => $teng);

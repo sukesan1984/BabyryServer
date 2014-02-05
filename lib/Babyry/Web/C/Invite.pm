@@ -20,7 +20,8 @@ sub execute {
     return $c->render_500() if ! $c->stash->{user_id};
 
     my $params = {
-        user_id  => $c->stash->{user_id},
+        user_id       => $c->stash->{user_id},
+        invite_method => $c->req->param('invite_method'),
     };
     my $logic = Babyry::Logic::Invite->new;
 
@@ -33,8 +34,6 @@ sub execute {
         critf('Failed to invite params:%s error:%s', $self->dump($params), $self->dump( $ret->{error} ));
         $c->render_500();
     }
-use YAML;
-warnf(Dump $ret);
     $c->render('invite/completed.tx', $ret);
 }
 

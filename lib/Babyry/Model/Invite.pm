@@ -40,8 +40,6 @@ sub create {
     if (! $row ) {
         critf('Failed to invite params:%s error:%s', $self->dump($params), $@);
     }
-use YAML;
-warnf( Dump $row->get_columns );
     return $row->get_columns;
 }
 
