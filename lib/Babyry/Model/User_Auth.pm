@@ -15,6 +15,8 @@ sub create {
             user_id     => $params->{user_id},
             email        => $params->{email},
             password_hash  => $params->{password_hash},
+            created_at => $params->{created_at},
+            updated_at => $params->{updated_at},
         }
     );
 }

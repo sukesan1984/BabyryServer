@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use utf8;
 use parent qw/Babyry::Base/;
+use Digest::MD5 qw/md5_hex/;
 use Log::Minimal;
 
 use Babyry::Model::Sequence;
@@ -11,7 +12,7 @@ use Babyry::Model::User;
 use Babyry::Model::User_Auth;
 use Babyry::Model::Register_Token;
 use Babyry::Model::Common;
-#use Babyry::Model::Maill;
+use Babyry::Model::AmazonSES;
 
 sub execute {
     my ($self, $params) = @_;
@@ -31,10 +32,13 @@ sub execute {
     my $teng = $self->teng('BABYRY_MAIN_W');
     my $user = Babyry::Model::User->new();
     my $user_auth = Babyry::Model::User_Auth->new();
-    my $token = Babyry::Model::Register_Token->new();
-#    my $mail = Babyry::Model::Maill->new();
+    my $register_token = Babyry::Model::Register_Token->new();
+    my $mail = Babyry::Model::AmazonSES->new();
     my $unixtime = time();
+    my $expired_at = $self->get_expired_at($unixtime);
+    my $token = $self->create_token($user_id);
 
+    $teng->txn_begin;
     eval {
         $user->create(
             $teng,
@@ -51,22 +55,35 @@ sub execute {
                 user_id => $user_id,
                 email         => $params->{email},
                 password_hash => Babyry::Model::Common->new->enc_password($params->{password}),
+                created_at => $unixtime,
+                updated_at => $unixtime,
             }
         );
 
-        $token->create(
+        $register_token->create(
             $teng,
             {
                 user_id    => $user_id,
                 token      => $token,
-                expired_at => $self->get_expired_at($unixtime),
+                expired_at => $expired_at,
             }
         );
 
-#        $mail->send();
+#        $mail->set_subject("Babyryにようこそ");
+#        $mail->set_body('てすと');#<<"TEXT");
+#        以下のURLをクリックして認証を完了してください
+#
+#        http://babyryserver5000/register/verify?token=$token
+#        http://babyryserver5001/register/verify?token=$token
+#        http://babyryserver5002/register/verify?token=$token
+#TEXT
+        #$mail->set_address($params->{email});
+#        $mail->set_address('meaning.sys@gmail.com');
+#        $mail->send_mail();
     };
     if ($@) {
         $teng->txn_rollback;
+        $teng->disconnect();
         critf($@);
         return { error => 'FAILED_TO_REGISTER' };
     }
@@ -97,6 +114,11 @@ sub match_password {
 sub get_expired_at {
     my ($self, $unixtime) = @_;
     return $unixtime + 3600 * 24; # TODO move to config
+}
+
+sub create_token {
+    my ($self, $user_id) = @_;
+    return md5_hex(time . $user_id . Babyry::Common->get_key_vault('register_secret'));
 }
 
 1;
