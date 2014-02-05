@@ -5,6 +5,7 @@ use warnings;
 use utf8;
 use parent qw/Babyry::Base/;
 use String::Random;
+use Log::Minimal;
 
 use constant {
     INVITE_CODE_LENGTH => 8,
@@ -15,35 +16,37 @@ sub create {
 
     $now ||= time;
 
-    my $teng = $self->teng('BABYRY_MAIN_W');
-
     my $invite_code = '';
     my $row;
     for (1 .. 3) {
 
         $row = eval {
-            $teng->insert(
+            $self->teng->insert(
                 'invite',
                 {
                     user_id     => $params->{user_id},
-                    email       => $params->{email},
-                    invite_code => $self->create_invite_code,
+                    invite_code => _create_invite_code(),
                     created_at  => $now,
                 }
             );
         };
         if ($@ || ! $row) {
+            warnf('insert into invite error:%s', $@ || '');
             next;
         }
         last;
     }
+
+    if (! $row ) {
+        critf('Failed to invite params:%s error:%s', $self->dump($params), $@);
+    }
+use YAML;
+warnf( Dump $row->get_columns );
     return $row->get_columns;
 }
 
-sub create_invite_code {
-    my $self = shift;
-
-    return String::Random->new->randregex("[A-Za-z0-9]{ INVITE_CODE_LENGTH() }");
+sub _create_invite_code {
+    return String::Random->new->randregex(sprintf('[A-Za-z0-9]{%s}',  INVITE_CODE_LENGTH));
 }
 
 1;

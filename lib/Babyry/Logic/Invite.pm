@@ -6,12 +6,15 @@ use utf8;
 use parent qw/Babyry::Base/;
 
 use  Babyry::Service::Invite;
+use Log::Minimal;
 
 sub execute {
     my ($self, $params) = @_;
+    
+    warnf("Logic/Invite");
 
     my $service = Babyry::Service::Invite->new;
-    return $service->invite($params);
+    return $service->execute($params);
 }
 
 1;

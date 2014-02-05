@@ -4,7 +4,7 @@ use warnings;
 use utf8;
 
 use Digest::MD5 qw/md5_hex/;
-use parent qw/Babyry::Logic/;
+use parent qw/Babyry::Base/;
 
 sub create {
     my ($self, $user_id) = @_;
