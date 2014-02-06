@@ -29,15 +29,15 @@ sub dx {
 sub teng {
     my ($self, $label) = @_;
 
-    return $self->{teng} if $self->{teng};
+    return $self->{teng}{$label} if $self->{teng}{$label};
 
     my $teng = Teng::Schema::Loader->load(
         namespace => 'Babyry::Teng',
         dbh       => $self->dbh($label),
     );
     $teng->load_plugin('Count');
-    $self->{teng} = $teng;
-    return $self->{teng};
+    $self->{teng}{$label} = $teng;
+    return $self->{teng}{$label};
 }
 
 sub sql {
