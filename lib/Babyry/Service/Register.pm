@@ -68,27 +68,27 @@ sub execute {
                 expired_at => $expired_at,
             }
         );
-
-#        $mail->set_subject("Babyryにようこそ");
-#        $mail->set_body('てすと');#<<"TEXT");
-#        以下のURLをクリックして認証を完了してください
-#
-#        http://babyryserver5000/register/verify?token=$token
-#        http://babyryserver5001/register/verify?token=$token
-#        http://babyryserver5002/register/verify?token=$token
-#TEXT
-        #$mail->set_address($params->{email});
-#        $mail->set_address('meaning.sys@gmail.com');
-#        $mail->send_mail();
     };
     if ($@) {
         $teng->txn_rollback;
         $teng->disconnect();
-        critf($@);
         return { error => 'FAILED_TO_REGISTER' };
     }
     $teng->txn_commit;
     $teng->disconnect();
+
+    $mail->set_subject("Babyryにようこそ");
+    $mail->set_body(<<"TEXT");
+        Please click this url to verify your account.
+
+        http://babyryserver5000/register/verify?token=$token
+        http://babyryserver5001/register/verify?token=$token
+        http://babyryserver5002/register/verify?token=$token
+TEXT
+    #$mail->set_address($params->{email});
+    $mail->set_address('meaning.sys@gmail.com');
+    $mail->send_mail();
+
     return;
 }
 

@@ -46,13 +46,10 @@ sub send_mail {
         subject => $mail_subject,
         text => $mail_body,
     };
-
     my $res = $aws->ses('send-email', $params);
     if($AWS::CLIWrapper::Error->{Code}) {
         die "$AWS::CLIWrapper::Error->{Code}, $AWS::CLIWrapper::Error->{Message}";
     }
-infof($res);
-infof($AWS::CLIWrapper::Error->{Code});
 }
 
 1;
