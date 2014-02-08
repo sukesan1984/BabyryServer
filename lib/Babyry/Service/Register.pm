@@ -92,6 +92,42 @@ TEXT
     return;
 }
 
+sub verify {
+    my ($self, $params) = @_;
+
+    my $user = Babyry::Model::User->new(); 
+    my $register_token = Babyry::Model::Register_Token->new();
+    my $teng = $self->teng('BABYRY_MAIN_R');
+
+    # get user_id by token
+    my $user_id = $register_token->get_user_id( $teng, { token => $params->{token} } );
+    if (!$user_id) {
+        $teng->disconnect;
+        return {error => 'INVALID TOKEN'};
+    }
+
+    $teng = $self->teng('BABYRY_MAIN_W');
+    $teng->txn_begin;
+    my $error = $user->update_status( $teng, { status => '1', user_id => $user_id } );
+    if ($error) {
+        $teng->txn_rollback;
+        $teng->disconnect;
+        return {error => $error};
+    }
+
+    $error = $register_token->delete( $teng, { token => $params->{token} } );
+    if ($error->{error}) {
+        $teng->txn_rollback;
+        $teng->disconnect;
+        return {error => $error};
+    }
+
+    $teng->txn_commit;
+    $teng->disconnect;
+
+    return;
+}
+
 sub varidate_password {
     my ($self, $password) = @_;
     if($password eq '') {

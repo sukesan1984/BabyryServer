@@ -2,7 +2,7 @@ package Babyry::Web::C::Register;
 
 use strict;
 use warnings;
-use parent qw/Babyry::Web::C/;
+use parent qw/Babyry::Web::C Babyry::Base/;
 use Log::Minimal;
 use Babyry::Logic::Register;
 
@@ -36,6 +36,26 @@ critf($ret->{error});
     }
 
     $c->redirect('/');
+}
+
+sub verify {
+    my ($self, $c) = @_;
+
+    my $params = {
+        token => $c->req->param('token') || '',
+    };
+
+    my $logic = Babyry::Logic::Register->new;
+
+    my $ret = eval { $logic->verify($params); };
+    if ( my $e = $@ ) {
+        critf($e);
+    }
+    if ( $ret->{error} ) {
+        critf($ret->{error});
+    }
+
+    $c->redirect('/login');
 }
  
 1;
