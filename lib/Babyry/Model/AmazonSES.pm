@@ -1,12 +1,13 @@
-package Babyry::Logic::AmazonSES;
+package Babyry::Model::AmazonSES;
 use strict;
 use warnings;
 use utf8;
 
+use Log::Minimal;
 use AWS::CLIWrapper;
 use Jcode;
 
-use parent qw/Babyry::Logic/;
+use parent qw/Babyry::Base/;
 
 sub set_subject {
     my ($self, $subject) = @_;
@@ -25,7 +26,7 @@ sub set_address {
 
 sub send_mail {
     my ($self) = @_;
-    return 'there is no subject or body or address.' if (!$self->{body} || !$self->{address} || !$self->{subject});
+    die 'there is no subject or body or address.' if (!$self->{body} || !$self->{address} || !$self->{subject});
 
     my $aws = AWS::CLIWrapper->new(
         region => 'us-east-1',
@@ -35,22 +36,20 @@ sub send_mail {
     $mail_subject = jcode($mail_subject)->mime_encode;
     my $mail_to = jcode($self->{address})->jis;
     $mail_to = jcode($mail_to)->mime_encode;
-    my $mail_from = jcode($Secret::gmail->{address})->jis;
+    my $mail_from = jcode('meaning.sys@gmail.com')->jis;
     $mail_from = jcode($mail_from)->mime_encode;
     my $mail_body = jcode($self->{body})->jis;
 
     my $params = {
-        from => 'meaning.sys@gmail.com',
+        from => $mail_from,
         to => $mail_to,
         subject => $mail_subject,
         text => $mail_body,
     };
-
     my $res = $aws->ses('send-email', $params);
-    if(!$res) {
-        return "$AWS::CLIWrapper::Error->{Code}, $AWS::CLIWrapper::Error->{Message}"
+    if($AWS::CLIWrapper::Error->{Code}) {
+        die "$AWS::CLIWrapper::Error->{Code}, $AWS::CLIWrapper::Error->{Message}";
     }
-    return 0;
 }
 
 1;

@@ -2,8 +2,8 @@
     '/invite' => +{
         controller => 'Invite', action => 'index',
     },
-    '/invite/email' => +{
-        controller => 'Invite', action => 'email',
+    '/invite/execute' => +{
+        controller => 'Invite', action => 'execute',
     },
 }
 
